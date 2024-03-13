@@ -33,13 +33,13 @@ function runGame(event) {
   <div class="row list_of_games d-none">
     <div class="col-6">
       <div class="game text-center" @click="runGame" data-game="millionaire">
-        <img src="./assets/img/orig.png" class="img-fluid rounded " alt="">
+        <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
         <p>Нажми на картинку чтобы сыграть</p>
       </div>
     </div>
     <div class="col-6">
       <div class="game text-center" @click="runGame" data-game="millionaire">
-        <img src="./assets/img/orig.png" class="img-fluid rounded " alt="">
+        <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
         <p>Нажми на картинку чтобы сыграть</p>
       </div>
     </div>
@@ -47,13 +47,13 @@ function runGame(event) {
   <div class="row list_of_games d-none">
     <div class="col-6">
       <div class="game text-center" @click="runGame" data-game="millionaire">
-        <img src="./assets/img/orig.png" class="img-fluid rounded " alt="">
+        <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
         <p>Нажми на картинку чтобы сыграть</p>
       </div>
     </div>
     <div class="col-6">
       <div class="game text-center" @click="runGame" data-game="millionaire">
-        <img src="./assets/img/orig.png" class="img-fluid rounded " alt="">
+        <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
         <p>Нажми на картинку чтобы сыграть</p>
       </div>
     </div>
@@ -65,7 +65,7 @@ function runGame(event) {
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
     <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+      <img src="../public/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
   <p @click="test">Click me</p>

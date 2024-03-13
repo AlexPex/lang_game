@@ -22,7 +22,7 @@
 }
 
 body{
-  background-image: url('src/assets/img/background-1.jpg');
+  background-image: url('public/img/background-1.jpg');
 }
 
 #game_millionaire .button-section button{
