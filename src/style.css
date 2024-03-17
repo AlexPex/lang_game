@@ -13,7 +13,7 @@
 }
 
 .game{
-  height: 500px;
+  height: 300px;
 }
 
 /* Games */
@@ -21,11 +21,67 @@
   height: 500px;
 }
 
-body{
+.background_millionaire{
   background-image: url('../public/img/background-1.jpg');
 }
+.background_field_of_shame{
+  background-image: url('../public/img/background-3.webp');
+  background-position: center; 
+  background-size: cover;
+}
+/* 
+https://htmlacademy.ru/blog/css/background-image
+} */
 
 #game_millionaire .button-section button{
   width: 90%;
   height: 120px
 }
+
+.game_field_of_shame_drag,
+.game_field_of_shame_drop{
+  min-height: 500px;
+  background-color: white;
+}
+
+.figure-initial-place{
+  height: 201px;
+  min-height: 200px;
+}
+
+.empty{
+  height:200px;
+  display: inline-block;
+}
+
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1001;
+}
+/* Bottom center text */
+.bottom-left {
+  position: absolute;
+  bottom: 50px;
+  left: 15%;
+  z-index: 1001;
+}
+
+.core_container,
+.external_container{
+  position: relative;
+  width: 150px;
+  height: 150px;
+  /* border: 1px solid red; */
+  z-index: 900;
+}
+.external_container{
+  width: 300px;
+  height: 300px;
+}
+
+

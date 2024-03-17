@@ -3,10 +3,7 @@ import './style.css'
 import App from './App.vue'
 
 import "bootstrap/dist/css/bootstrap.css"
-
-// Import our custom CSS
-// import '../scss/styles.scss'
-// // Import all of Bootstrap's JS
-// import "bootstrap/dist/js/bootstrap.js";
+import "bootstrap/dist/js/bootstrap.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 createApp(App).mount('#app')
