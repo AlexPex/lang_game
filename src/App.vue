@@ -5,6 +5,11 @@ import field_of_shame from './components/field_of_shame.vue'
 import { onMounted } from 'vue'
 
 let game_shame = { score: 0 };
+let game_millionaire = { score: 0, answers: [], previous_score: 0 };
+let background_music = new Audio('../public/audio/base.mp3');
+let correct_answer_music = new Audio('../public/audio/correct_answer.mp3');
+let wrong_answer_music = new Audio('../public/audio/wrong_answer.mp3');
+let ending_music = new Audio('../public/audio/finish.mp3');
 //dev temporar settings
 onMounted(() => {
     // $('#app_header').removeClass('text-primary').addClass('text-white');
@@ -12,6 +17,7 @@ onMounted(() => {
     // $('#app_task').text('Игра "Определи поле состояния"').addClass('text-white');
     // $('#app_task').append('<button type="button" class="btn btn-outline-light ms-2" id="goToMenu">Перейти в меню</button>');
     // $('body').addClass('background_field_of_shame');
+    $('body[class="background"]').removeClass();
    
 });
 
@@ -78,6 +84,10 @@ function runDrag_Drop(dragElementId = null) {
 }
 
 function showMenu(game, background_class, score = null) {
+    background_music.pause();
+    correct_answer_music.pause();
+    wrong_answer_music.pause();
+    ending_music.pause();
     $('#' + game).addClass('d-none').fadeOut();
     $('body').removeClass(background_class);
     if (score != null || score > 0) {
@@ -87,6 +97,22 @@ function showMenu(game, background_class, score = null) {
     $('#app_task').text('Выберите игру');
     $('#app_task').removeClass('text-white');
     $('.list_of_games').fadeIn();
+}
+
+// this function changes button state according to the answer- green or red
+function changeButtonStatus(question, element_id, status = 'success') {
+    $(`#${element_id} .btn-outline-dark`).each((index, btn) => {
+        if ($(btn).text().trim().startsWith(question.answer + '. ')) {
+            console.log('yes');
+            if (status === 'success') {
+                $(btn).toggleClass('btn-outline-dark btn-outline-success');
+            } else {
+                $(btn).toggleClass('btn-outline-dark btn-outline-danger');
+            }
+
+        }
+
+    });
 }
 
 function runGame(event) {
@@ -104,6 +130,161 @@ function runGame(event) {
                 $('#goToMenu').click(() => {
                     showMenu('game_millionaire', 'background_millionaire');
                 });
+                //logic of the game
+                //sound
+                
+                background_music.play();
+                //handle what block of question will appear next
+                $('.game_millionaire_next').click(function () {
+                    
+                    let id_question = $(this).parents('.card').attr('id').split('_q');
+                    $('#' + $(this).parents('.card').attr('id')).fadeOut();
+                    let nextQuestionId = '#' + id_question[0] + '_q' + (parseInt(id_question[1]) + 1);
+                    if (nextQuestionId === '#game_millionaire_q9') {
+                        ending_music.play();
+                        $('#game_millionaire_score').text(game_millionaire.score);
+                    } else {
+                        background_music.play();
+                    }
+                    console.log(nextQuestionId);
+                    $(nextQuestionId).removeClass('d-none').fadeIn();
+                });
+                // save user answers by clicking the button
+                $('#game_millionaire .btn-outline-dark').click(function () {
+                    if (!$(this).hasClass('active')) {
+                        $(this).addClass('active');
+                    }
+                    let question_id = $(this).parents('.card').attr('id');
+                    let answer = $(this).text().split('.')[0].trim();
+                
+                    if (question_id.length > 5 && answer.length === 1) {
+                        game_millionaire.answers.push({
+                            id: question_id,
+                            answer: answer
+                        });
+                    } else {
+                        alert('Ошибка! Не могу понять ответ.');
+                    }
+                });
+                $('.game_millionaire_answer').click(function () {
+                    background_music.pause();
+                    background_music.load();
+                    let question_id = $(this).parents('.card').attr('id');
+                    let answers = game_millionaire.answers.filter((el) => {
+                        return el.id === question_id;
+                    });
+                    $(this).attr('disabled', 'disabled');
+                    $(this).prev().removeClass('invisible');
+
+                    console.log(answers);
+                    switch (question_id) {
+                        case "game_millionaire_q1":
+                            answers.forEach(element => {
+                                if (element.answer === 'G' || element.answer === 'C') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q2":
+                            answers.forEach(element => {
+                                if (element.answer === 'F') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q3":
+                            answers.forEach(element => {
+                                if (element.answer === 'G') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q4":
+                            answers.forEach(element => {
+                                if (element.answer === 'A') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q5":
+                            answers.forEach(element => {
+                                if (element.answer === 'A') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q6":
+                            answers.forEach(element => {
+                                if (element.answer === 'A') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q7":
+                            answers.forEach(element => {
+                                if (element.answer === 'C') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                        case "game_millionaire_q8":
+                            answers.forEach(element => {
+                                if (element.answer === 'C' || element.answer === 'A') {
+                                    game_millionaire.score += 1;
+                                    changeButtonStatus(element, element.id);
+                                } else {
+                                    game_millionaire.score -= 0.1;
+                                    changeButtonStatus(element, element.id, 'danger');
+                                }
+                            });
+                            break;
+                    }
+                    if (game_millionaire.score >= game_millionaire.previous_score) {
+                        correct_answer_music.play();
+                        setTimeout(() => {
+                            correct_answer_music.pause();
+                            correct_answer_music.load();
+                        }, 5000);
+                    } else {
+                        wrong_answer_music.play();
+                        setTimeout(() => {
+                            wrong_answer_music.pause();
+                            wrong_answer_music.load();
+                        }, 5000);
+                    }
+                    game_millionaire.previous_score = game_millionaire.score
+                    console.log(game_millionaire);
+                });
+
+                
             }, 500);
             break;
         case 'field_of_shame':

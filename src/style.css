@@ -32,10 +32,12 @@
 /* 
 https://htmlacademy.ru/blog/css/background-image
 } */
-
+.my-d-none{
+  display: none;
+}
 #game_millionaire .button-section button{
   width: 90%;
-  height: 120px
+  height: 150px
 }
 
 .game_field_of_shame_drag,
