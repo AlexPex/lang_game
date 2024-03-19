@@ -3,13 +3,17 @@
 import millionaire from './components/millionaire.vue'
 import field_of_shame from './components/field_of_shame.vue'
 import { onMounted } from 'vue'
-
+const isPublished = true;
+let path = './public'
+if (isPublished) {
+    path = '../';
+}
 let game_shame = { score: 0 };
 let game_millionaire = { score: 0, answers: [], previous_score: 0 };
-let background_music = new Audio('../public/audio/base.mp3');
-let correct_answer_music = new Audio('../public/audio/correct_answer.mp3');
-let wrong_answer_music = new Audio('../public/audio/wrong_answer.mp3');
-let ending_music = new Audio('../public/audio/finish.mp3');
+let background_music = new Audio(path + '/audio/base.mp3');
+let correct_answer_music = new Audio(path + '../audio/correct_answer.mp3');
+let wrong_answer_music = new Audio(path + '../audio/wrong_answer.mp3');
+let ending_music = new Audio(path + '../audio/finish.mp3');
 //dev temporar settings
 onMounted(() => {
     // $('#app_header').removeClass('text-primary').addClass('text-white');
