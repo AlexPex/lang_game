@@ -4,7 +4,7 @@ import millionaire from './components/millionaire.vue'
 import field_of_shame from './components/field_of_shame.vue'
 import extra_circle from './components/extra_circle.vue'
 import { onMounted } from 'vue'
-const isPublished = true;
+const isPublished = false;
 let path = '../public'
 if (isPublished) {
     path = '../';
@@ -22,7 +22,7 @@ let correct_answer_music = new Audio(path + '/audio/correct_answer.mp3');
 let wrong_answer_music = new Audio(path + '/audio/wrong_answer.mp3');
 let ending_music = new Audio(path + '/audio/finish.mp3');
 let jquery_ui_path = path + '/js/jquery-ui.min.js';
-$('#jq_ui').attr('src', jquery_ui_path);
+
 //dev temporar settings
 onMounted(() => {
     // $('#app_header').removeClass('text-primary').addClass('text-white');
@@ -31,6 +31,7 @@ onMounted(() => {
     // $('#app_task').append('<button type="button" class="btn btn-outline-light ms-2" id="goToMenu">Перейти в меню</button>');
     // $('body').addClass('background_field_of_shame');
     $('body[class="background"]').removeClass();
+    $('body').append(`<script src="${jquery_ui_path}" id="jq_ui">`);
    
 });
 
