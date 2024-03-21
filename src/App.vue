@@ -4,7 +4,7 @@ import millionaire from './components/millionaire.vue'
 import field_of_shame from './components/field_of_shame.vue'
 import extra_circle from './components/extra_circle.vue'
 import { onMounted } from 'vue'
-const isPublished = false;
+const isPublished = true;
 let path = '../public'
 if (isPublished) {
     path = '../';
