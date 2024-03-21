@@ -21,6 +21,8 @@ let background_music = new Audio(path + '/audio/base.mp3');
 let correct_answer_music = new Audio(path + '/audio/correct_answer.mp3');
 let wrong_answer_music = new Audio(path + '/audio/wrong_answer.mp3');
 let ending_music = new Audio(path + '/audio/finish.mp3');
+let jquery_ui_path = path + '/js/jquery-ui.min.js';
+$('#jq_ui').attr('src', jquery_ui_path);
 //dev temporar settings
 onMounted(() => {
     // $('#app_header').removeClass('text-primary').addClass('text-white');

@@ -426,7 +426,7 @@ const count = ref(0)
             </div>
 
         </div>
-        <div class="card border-primary mb-3 " id="game_millionaire_q8">
+        <div class="card border-primary mb-3 d-none" id="game_millionaire_q8">
             <div class="card-header">Задание 8</div>
             <div class="card-body text-primary">
                 <h4 class="card-title">Проанализируйте средства выражения семантики стыда в приведенных примерах из
