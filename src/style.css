@@ -29,6 +29,11 @@
   background-position: center; 
   background-size: cover;
 }
+.background_field_of_shame{
+  background-image: url('../public/img/background-5.jpg');
+  background-position: center; 
+  background-size: cover;
+}
 /* 
 https://htmlacademy.ru/blog/css/background-image
 } */
@@ -85,5 +90,18 @@ https://htmlacademy.ru/blog/css/background-image
   width: 300px;
   height: 300px;
 }
+.draggable_word:hover{
+  cursor: pointer;
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-success-rgb),var(--bs-bg-opacity))!important;
+    background-image: var(--bs-gradient) !important;
+    color: white
+}
+.drop-zone{
+  background-color: rgb(124, 172, 172);
+}
 
-
+#droppable{
+  max-height: 350px;
+  overflow-y: auto;
+}

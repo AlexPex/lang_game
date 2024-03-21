@@ -2,18 +2,25 @@
 // import HelloWorld from './components/HelloWorld.vue'
 import millionaire from './components/millionaire.vue'
 import field_of_shame from './components/field_of_shame.vue'
+import extra_circle from './components/extra_circle.vue'
 import { onMounted } from 'vue'
 const isPublished = true;
-let path = './public'
+let path = '../public'
 if (isPublished) {
     path = '../';
 }
 let game_shame = { score: 0 };
 let game_millionaire = { score: 0, answers: [], previous_score: 0 };
+let game_extra_circle = {
+    score: 0, answers: [
+        'от радости, волнения и стыда', 'страх', "жалости", "заплакала слезами", "преисполнена отчаяния, стыда, унижения,",
+        "виновата", "побежденного", "поспешно отвернувшись,", "ушел", "высшей степени хохота.", "погибель",
+        "измена."
+] };
 let background_music = new Audio(path + '/audio/base.mp3');
-let correct_answer_music = new Audio(path + '../audio/correct_answer.mp3');
-let wrong_answer_music = new Audio(path + '../audio/wrong_answer.mp3');
-let ending_music = new Audio(path + '../audio/finish.mp3');
+let correct_answer_music = new Audio(path + '/audio/correct_answer.mp3');
+let wrong_answer_music = new Audio(path + '/audio/wrong_answer.mp3');
+let ending_music = new Audio(path + '/audio/finish.mp3');
 //dev temporar settings
 onMounted(() => {
     // $('#app_header').removeClass('text-primary').addClass('text-white');
@@ -95,6 +102,7 @@ function showMenu(game, background_class, score = null) {
     $('#' + game).addClass('d-none').fadeOut();
     $('body').removeClass(background_class);
     if (score != null || score > 0) {
+        console.log('#' + game + '_score');
         $('#' + game + '_score').text('Набрано: ' + score + ' баллов').removeClass('invisible');
     }
     $('#app_header').removeClass('text-white').addClass('text-primary');
@@ -132,7 +140,7 @@ function runGame(event) {
             $('#app_task').append('<button type="button" class="btn btn-outline-light ms-2" id="goToMenu">Перейти в меню</button>');
             setTimeout(() => {
                 $('#goToMenu').click(() => {
-                    showMenu('game_millionaire', 'background_millionaire');
+                    showMenu('game_millionaire', 'background_millionaire', game_millionaire.score);
                 });
                 //logic of the game
                 //sound
@@ -146,7 +154,7 @@ function runGame(event) {
                     let nextQuestionId = '#' + id_question[0] + '_q' + (parseInt(id_question[1]) + 1);
                     if (nextQuestionId === '#game_millionaire_q9') {
                         ending_music.play();
-                        $('#game_millionaire_score').text(game_millionaire.score);
+                        $('#game_millionaire_score1').text(game_millionaire.score);
                     } else {
                         background_music.play();
                     }
@@ -271,7 +279,7 @@ function runGame(event) {
                             });
                             break;
                     }
-                    if (game_millionaire.score >= game_millionaire.previous_score) {
+                    if (game_millionaire.score > game_millionaire.previous_score) {
                         correct_answer_music.play();
                         setTimeout(() => {
                             correct_answer_music.pause();
@@ -395,6 +403,86 @@ function runGame(event) {
                 }, 900);
             }, 500);
             break;
+        case 'extra_circle':
+            $('#app_header').removeClass('text-primary').addClass('text-white');
+            $('#app_header').addClass('text-white');
+            $('body').addClass('background_field_of_shame');
+            $('#app_task').text('Игра "Периферия семантического поля стыд"').addClass('text-white');
+            $('#app_task').append('<button type="button" class="btn btn-outline-light ms-2" id="goToMenu">Перейти в меню</button>');
+            $('#game_extra_circle').removeClass('d-none').fadeIn();
+            setTimeout(() => {
+                $('#goToMenu').click(() => {
+                    showMenu('game_extra_circle', 'background_field_of_shame', game_extra_circle.score);
+                });
+                setTimeout(() => {
+                    // $("#draggable").draggable();
+                    let text = `
+                    Устав был очень_длинен, и Пьер от_радости,_волнения_и_стыда не_был_в_состоянии_понимать того, что
+                читали. Увидав этот страх Наташи, Соня заплакала_слезами стыда и жалости за свою подругу. Он не знал,
+                что душа Наташи была преисполнена_отчаяния,_стыда,_унижения, и что она не виновата была в том, что лицо
+                ее нечаянно выражало спокойное_достоинство_и_строгость. Вид этого офицера был настолько презрительный и
+                высокомерный, что Ростов вдруг почувствовал стыд побежденного и, поспешно_отвернувшись, ушел назад. У
+                Иполита это выражение стыда выражалось только в высшей_степени_хохота. Ты не знаешь, что это такое? Это
+                погибель нашей армии, стыд. Это измена. Он проснулся и все плакал и плакал_слезами стыда и раскаяния о
+                своем падении, навеки_отделившем его от Сони (Л. Н. Толстой «Война и мир»).
+                    `;
+                    let words = text.trim().split(' ');
+                    words.forEach(word => {
+                        if (word.includes('_')) {
+                            word = word.replaceAll('_', ' ');
+                        }
+                        $('#draggable_words').append(`<span class="draggable_word">${word} </span>`)
+                    });
+                    $('#placeholder').hide();
+                    $(".draggable_word").draggable({
+                        revert: "invalid",
+                        containment: "document",
+                        helper: "clone",
+                        cursor: "move",
+                        scroll: true
+                    });
+                    $("#sortable").sortable({
+                        revert: true
+                    });
+                    $("#droppable").droppable({
+                        accept: ".draggable_word",
+                        classes: {
+                            "ui-droppable-active": "drop-zone",
+                            "ui-droppable-hover": "ui-state-hover"
+                        },
+                        connectToSortable: "#sortable",
+                        drop: function (event, ui) {
+                            // $(this).find('ul').append(`<li class="list-group-item">${ui.draggable.clone()}}</li>`);
+                            
+                            $(ui.draggable.clone()).removeClass('draggable_word').
+                                appendTo('#droppable ul').wrap('<li class="list-group-item"></li>');
+                            $(this).find('.draggable_word').removeClass();
+                            // $(this).find('ul').append(`<li class="list-group-item">${cloui.draggablened}</li>`);
+                            // $('#droppable').addClass('bg-success');
+                        }
+                    });
+
+                    $('#game_extra_circle_btn').click(() => {
+                        console.log(game_extra_circle.answers);
+                        $('#sortable').children().each((index, element) => {
+                            let text = $(element).text().trim();
+                            console.log(text);
+                            if (game_extra_circle.answers.indexOf(text) !== -1) {
+                                console.log('match');
+                                game_extra_circle.score += 1;
+                                $(element).addClass('bg-success');
+                            } else {
+                                console.log('wrong');
+                            }
+                            console.log('---');
+                        });
+                        $('#game_extra_circle_Result').text(game_extra_circle.score);
+                        $('#game_extra_circle_Modal').modal('show');
+                        console.log(game_extra_circle);
+                    });
+                }, 1000);
+            }, 500);
+            break;
 
         default:
             break;
@@ -411,7 +499,7 @@ function runGame(event) {
             <div class="game text-center" @click="runGame" data-game="millionaire">
                 <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
                 <p>Нажми на картинку чтобы сыграть <span class="alert alert-info py-0 invisible" role="alert"
-                        id="millionaire_score"></span></p>
+                        id="game_millionaire_score"></span></p>
             </div>
         </div>
         <div class="col-6">
@@ -419,19 +507,20 @@ function runGame(event) {
                 <img src="../public/img/background-3.webp" class="img-fluid rounded " alt="">
                 <h3 class="position-absolute top-50 start-0">Определи поле состояния</h3>
                 <p>Нажми на картинку чтобы сыграть <span class="alert alert-info  py-0 invisible" role="alert"
-                        id="field_of_shame_score"></span></p>
+                        id="game_field_of_shame_score"></span></p>
             </div>
         </div>
     </div>
-    <div class="row list_of_games d-none">
+    <div class="row list_of_games" style="margin-top: 130px;">
         <div class="col-6">
-            <div class="game text-center" @click="runGame" data-game="millionaire">
-                <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
-                <p>Нажми на картинку чтобы сыграть</p>
+            <div class="game text-center" @click="runGame" data-game="extra_circle">
+                <img src="../public/img/task_3_logo.png" class="img-fluid rounded " alt="">
+                <p>Нажми на картинку чтобы сыграть <span class="alert alert-info py-0 invisible" role="alert"
+                        id="game_extra_circle_score"></span></p>
             </div>
         </div>
         <div class="col-6">
-            <div class="game text-center" @click="runGame" data-game="millionaire">
+            <div class="game text-center" @click="runGame" data-game="part_of_speach">
                 <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
                 <p>Нажми на картинку чтобы сыграть</p>
             </div>
@@ -440,6 +529,7 @@ function runGame(event) {
 
     <millionaire msg="Vite + Vue" />
     <field_of_shame />
+    <extra_circle />
     <!-- <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
