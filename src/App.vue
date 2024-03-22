@@ -524,7 +524,7 @@ function runGame(event) {
         </div>
         <div class="col-6">
             <div class="game text-center" @click="runGame" data-game="part_of_speach">
-                <img src="../public/img/orig.png" class="img-fluid rounded " alt="">
+                <img src="../public/img/background-4.webp" class="img-fluid rounded " alt="">
                 <p>Нажми на картинку чтобы сыграть</p>
             </div>
         </div>
